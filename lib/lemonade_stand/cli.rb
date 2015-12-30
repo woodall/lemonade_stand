@@ -1,66 +1,29 @@
 require 'yaml'
 
 module LemonadeStand
+  class CLI < LemonadeStand::Application
 
-  class CLI
+    def initializer
+      load_yaml
+    end
 
     def play
-      load_yaml
-      set_players_and_days
-      @gamemaster.start_game
+      puts settings.welcome
+      puts " "
+      settings.get_players
+      settings.get_rounds
+      settings.start_game
       end_game
     end
 
   private
 
     def end_game
-      LemonadeStand::Audit.new(@gamemaster).squeeze
+      LemonadeStand::Audit.new.squeeze
     end
 
-    def set_players_and_days
-      `say "#{@text['welcome']['one']}"` if @text['settings']['mute']
-      text_formatter_with_prompt_and_sound(@text['setup']['player_setup'])
-      @number_of_players = gets.chomp
-      @number_of_players = validate @number_of_players
-      recruit_gamemaster(@number_of_players)
-
-      text_formatter_with_prompt_and_sound(@text['setup']['length_of_game'])
-      @number_of_days = gets.chomp
-      @number_of_days = validate @number_of_days
-      @gamemaster.total_days @number_of_days
-    end
-
-    def recruit_gamemaster players
-      @gamemaster ||= LemonadeStand::GameMaster.new(players)
-    end
-
-    def text_formatter_with_prompt_and_sound(question)
-      puts question
-      print " > "
-      `say "#{question}"` if @text['settings']['mute']
-    end
-
-    def load_yaml
-      filepath = File.join(File.dirname(__FILE__),"../yaml/audio_script.yaml")
-      @text = YAML.load_file(filepath)
-    end
-
-    def validate entry
-      while is_a_letter? entry
-        puts "'#{entry}' is not a number."
-         `say Error please enter a number` if @text['settings']['mute']
-
-        print " > "
-        entry = gets.chomp
-        @foo = entry.to_i
-      end
-      entry.to_i || @foo
-    end
-
-    def is_a_letter? entry
-      !(entry.to_i.to_s == entry)
+    def settings
+      @settings ||= Setting.new
     end
   end
 end
-
-
