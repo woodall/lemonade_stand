@@ -10,7 +10,7 @@ describe LemonadeStand::Bank do
   it 'manages cents' do
     player = LemonadeStand::Player.new
     bank = LemonadeStand::Bank.new({assets: 200, player: player })
-    assert_equal 2.00, bank.money
+    assert_equal 2.00, bank.money(bank.assets)
   end
 
   it 'deposits add to balance' do

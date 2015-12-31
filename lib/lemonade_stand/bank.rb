@@ -27,10 +27,6 @@ module LemonadeStand
       transactions.reduce(:+)
     end
 
-    def money
-      (@assets.to_f / 100.to_f).round(2)
-    end
-
   private
 
     def current_balance

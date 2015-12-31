@@ -1,6 +1,15 @@
 module LemonadeStand
   class Application
 
+    def initialize
+      load_yaml
+    end
+
+    def money amount
+      amount = amount.to_f / 100.to_f
+      sprintf('%.2f', amount)
+    end
+
     def ask(question)
       puts question
       print " > "

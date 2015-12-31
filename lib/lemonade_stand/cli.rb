@@ -4,7 +4,7 @@ module LemonadeStand
   class CLI < LemonadeStand::Application
 
     def initializer
-      load_yaml
+      super
     end
 
     def play
