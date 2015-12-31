@@ -3,6 +3,11 @@ module LemonadeStand
 
     attr_reader :forecast, :report
 
+    def initialize
+      get_weather
+      get_climate
+    end
+
     WEATHER = ['sunny', 'windy', 'calm', 'cloudy', 'rainy']
     CLIMATE = ['hot', 'warm', 'balmy', 'cool', 'cold' ]
 
@@ -26,7 +31,6 @@ module LemonadeStand
     def report
       run_report
       "#{@climate} and #{@weather} : WEATHER POINTS #{get_points}"
-
     end
 
     def get_weather
